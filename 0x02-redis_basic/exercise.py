@@ -45,6 +45,31 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(method: Callable):
+    """
+    display the history call
+    """
+    inputs_key = "{}:inputs".format(method.__qualname__)
+    outputs_key = "{}:outputs".format(method.__qualname__)
+
+    def wrapper(self):
+        """
+        wrapper function
+        """
+        inputs = self._redis.lrange(inputs_key, 0, -1)
+        outputs = self._redis.lrange(outputs_key, 0, -1)
+
+        print(
+            "{} was called {} times:".format(
+                method.__qualname__,
+                len(inputs)))
+
+        for inp, outp in zip(inputs, outputs):
+            print("{}(*{}) -> {}".format(method.__qualname__, inp, outp))
+
+    return wrapper
+
+
 class Cache:
     """
     cache storage information
