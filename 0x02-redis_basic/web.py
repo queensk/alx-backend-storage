@@ -35,6 +35,7 @@ def count_calls(method: Callable) -> Callable:
 
         return html_content
 
+
 @count_calls
 def get_page(url):
     return requests.get(url).text
