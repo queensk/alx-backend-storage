@@ -10,7 +10,7 @@ def nginx_stats():
     provides some stats about Nginx logs stored in MongoDB
     """
     client = MongoClient()
-    collect_nginx = client.log.nginx
+    collect_nginx = client.logs.nginx
 
     doc_number = collect_nginx.count_documents({})
     print("{} logs".format(doc_number))
